@@ -47,7 +47,7 @@ int main()
     time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
     cout<<time_spent<<endl;
 
-    fclose(stdin);
+    fclose(stdin); 
     fclose(stdout);
     return 0;
 }
