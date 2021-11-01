@@ -7,14 +7,6 @@ using namespace std;
 typedef long long ll;
 const ll N = 1001;
 
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-
-ll getRand(ll r)
-{
-   uniform_int_distribution<ll> uid(0,r-1);
-   return uid(rng);
-}
-
 ll a[N][N],b[N][N],c[N][N];
 
 void multiply(ll ars, ll are, ll acs,ll ace, ll brs, ll bre, ll bcs, ll bce)
