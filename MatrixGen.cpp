@@ -46,7 +46,7 @@ int main()
                     cout<<gr(1e9)<<' ';
                 }
                 cout<<endl;
-            }
+            } 
         }
     }
     return 0;
