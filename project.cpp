@@ -1,3 +1,6 @@
+/* PC-01 Cache algorithms */
+/* Graph Class for methods DFS, BFS and Dijkstra's algorithm */
+
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -46,7 +49,7 @@ public:
 			{
 				x = input_vertex();
 				y = input_vertex();
-				cin>>w; 			//Change 3
+				cin>>w; 			//Change 2
 				addedge({x, y}, w);
 			}
 		}
