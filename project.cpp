@@ -6,7 +6,6 @@
 using namespace std;
 
 #define endl "\n"
-#define mod 1000000007
 
 typedef long long ll;
 
