@@ -77,7 +77,7 @@ void graph::dfs(ll p, ll c)
 	{
 		if(adj[c][i].first != p)
 		{
-			df(c, adj[c][i].first);
+			dfs(c, adj[c][i].first);
 		}
 	}
 	return;
@@ -143,6 +143,6 @@ int main()
 	vector<ll> dist(n);
 	a.dijkstra(2, dist);
 	for(ll x:dist)
-		cout<<output_vertex(x)<<" ";
+		cout<<x<<" ";
     return 0;
 }
