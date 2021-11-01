@@ -61,7 +61,7 @@ public:
 				y = input_vertex(); //Change 3
 				addedge({x, y});
 			}
-		}
+		} 
 	}
 	void addedge(pair<ll, ll> edge, ll weight = 1)
 	{
