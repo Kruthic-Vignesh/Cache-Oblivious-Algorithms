@@ -1,9 +1,5 @@
 /* PC-01 - Cache Algorithms */
 
-#pragma GCC optimize("unroll-loops")
-#pragma GCC optimize("O3")
-#pragma GCC target("avx2")
-
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -54,21 +50,19 @@ void multiply(ll ars, ll are, ll acs,ll ace, ll brs, ll bre, ll bcs, ll bce)
 void solv()
 {
     ll m,n,p;
-    m = N - getRand(10);
-    n = N - getRand(10);
-    p = N - getRand(10);
+    cin>>m>>n>>p;
     for(ll i=0; i<m; i++)
     {
         for(ll j=0; j<n; j++)
         {
-            a[i][j] = getRand(1e4);
+            cin>>a[i][j];
         }
     }
     for(ll i=0; i<n; i++)
     {
         for(ll j=0; j<p; j++)
         {
-            b[i][j] = getRand(1e4);
+            cin>>b[i][j];
         }
     }
     for(ll i=0; i<m; i++)
@@ -79,25 +73,33 @@ void solv()
         }
     }
 
+
     multiply(0,m-1,0,n-1,0,n-1,0,p-1);
+
     return;
 }
 
 int main()
 {
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+   
     ll tc=1;
     cin>>tc;
 
     double time_spent = 0;
     clock_t begin = clock();
-
+   
     for(ll lv=1;lv<=tc;lv++)
     {
         solv();
     }
-
+       
     clock_t end = clock();
     time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
     cout<<time_spent<<endl;
+   
+    fclose(stdin);
+    fclose(stdout);
     return 0;
 }
