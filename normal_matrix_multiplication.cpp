@@ -32,7 +32,7 @@ void sol()
     }
     for(ll i = 0; i < m; i++)
     {
-        for(ll j = 0; j < p; j++)
+        for(ll j = 0; j < p; j++) 
         {
             c[i][j] = 0;
             for(ll k = 0; k < n; k++)
