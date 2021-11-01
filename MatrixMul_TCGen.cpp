@@ -1,4 +1,4 @@
-/*    Single Matrix Generator    */
+/*    Matrix Multiplication - Testcase Generator    */
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -61,4 +61,3 @@ int main()
     }
     return 0;
 }
-
