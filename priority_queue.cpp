@@ -29,7 +29,7 @@ public:
 	ll cnt;
 };
 
-class priority_queue
+class priority_q
 {
 public:
 	vector<lvl> level;
@@ -40,7 +40,7 @@ public:
 	void pull(ll, vec_ptr);
 };
 
-void priority_queue::push(ll lno, vec_ptr a) //level[lno] access, push X elements to level lno
+void priority_q::push(ll lno, vec_ptr a) //level[lno] access, push X elements to level lno
 {
 //sort(a);
 	ll ind = 0;
@@ -50,7 +50,7 @@ void priority_queue::push(ll lno, vec_ptr a) //level[lno] access, push X element
 		{
 			(*(level[lno].down_bf[i].st)).push_back(a->at(ind));
 			ind++;
-			if(*(level[lno].down_bf[i].st).size() == level[lno].down_bf[i].down_sz+1)
+			if((*(level[lno].down_bf[i].st)).size() == level[lno].down_sz+1)
 			{
 //split();
 //if(level[lno].down_bf[i].size() == level[lno].down_bf[i].down_cnt+1)
@@ -58,7 +58,7 @@ void priority_queue::push(ll lno, vec_ptr a) //level[lno] access, push X element
 //push final dbf into upbf
 //	if(level[lno].up_bf.size() > level[lno].up_sz)
 //     recursive push(X^3/2 elements)
-//}
+//clear}
 			}
 		}
 	}
@@ -74,11 +74,11 @@ void priority_queue::push(ll lno, vec_ptr a) //level[lno] access, push X element
 	}
 }
 
-void priority_queue::pull(ll lno, vec_ptr a)	//pull elements from level lno
+void priority_q::pull(ll lno, vec_ptr a)	//pull elements from level lno
 {
 	ll ind = level[lno].fir;
 	ll min_sz = (level[lno].down_sz + 1)/2;
-	if(*(level[lno].down_bf[ind].st).size() >= min_sz)
+	if((*(level[lno].down_bf[ind].st)).size() >= min_sz)
 	{
 //sort the ind buffer
 //take away least min_sz elements & put to a
@@ -96,7 +96,7 @@ void priority_queue::pull(ll lno, vec_ptr a)	//pull elements from level lno
 		{
 			(*a).push_back(tt);
 		}
-		*(level[lno].down_bf[ind].st).clear();
+		(*(level[lno].down_bf[ind].st)).clear();
 
 		//if(lno == last level)
 		{
@@ -148,7 +148,7 @@ void priority_queue::pull(ll lno, vec_ptr a)	//pull elements from level lno
 			level[lno].fir = curr_bf;
 			for(ll i=0; i<rem; i++)
 			{
-				*(level[lno].down_bf[curr_bf].st).push_back((*b).ar_pos);
+				(*(level[lno].down_bf[curr_bf].st)).push_back(b->at(ar_pos));
 				ar_pos++;
 			}
 
@@ -159,7 +159,7 @@ void priority_queue::pull(ll lno, vec_ptr a)	//pull elements from level lno
 				curr_bf = i;
 				for(ll j=0; j<min_sz; j++)
 				{
-					*(level[lno].down_bf[curr_bf].st).push_back((*b).ar_pos);
+					(*(level[lno].down_bf[curr_bf].st)).push_back(b->at(ar_pos));
 				}
 				level[lno].down_bf[curr_bf].next = -1;
 			}
