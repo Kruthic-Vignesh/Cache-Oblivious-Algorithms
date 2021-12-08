@@ -30,9 +30,16 @@ public:
 	down_cnt    : max number of downbuffers (X^1/2 + 1)
     cnt         : total number of elements in the down buffers
 	*/
-	ll up_sz, down_sz, down_cnt;
+	const ll up_sz, down_sz, down_cnt;
 	ll cnt;
+    lvl(const ll x) : up_sz (pow(x,1.5)), down_sz (2*x - 1), down_cnt(ceil(1 + pow(x,0.5)))
+    {
+        fir = -1;
+        down_bf_cnt = 0;
+        mex = 0;
 
+        //Add later
+    }
     pair<ll,ll> last_down_bf();
 };
 
@@ -43,21 +50,21 @@ public:
 	vector<T> ins_bf, del_bf;
 	void insert(T val);
 	T del_min();
-	void push(ll, vector<T>&);
-	void pull(ll, vector<T>&);
+	void push(const ll, vector<T>&);
+	void pull(const ll, vector<T>&);
 	void desc_sort(vector<T>&);
 	void asc_sort(vector<T>&);
-    void split(ll,ll);
+    void split(const ll,const ll);
 };
 
-void priority_q::push(ll lno, vector<T>& a) //level[lno] access, push X elements to level lno
+void priority_q::push(const ll lno, vector<T>& a) //level[lno] access, push X elements to level lno
 {
 /* asc_sort needed! */
     asc_sort(a);
 
     if(lno >= level.size())
     {
-        lvl new_lvl;
+        lvl new_lvl(x);
         level.push_back(new_lvl);
         level[lno].fir = 0;
         level[lno].mex++;
@@ -87,7 +94,7 @@ void priority_q::push(ll lno, vector<T>& a) //level[lno] access, push X elements
                     4. Adjust next, pivot & all counts
                 */
             }
-            if(level[lno].down_bf.size() == level[lno].down_cnt+1)      //too many down buffers
+            if(level[lno].down_bf_cnt == level[lno].down_cnt+1)      //too many down buffers
             {                   
                 pair<ll,ll> u = level[lno].last_down_bf();  
                 ll last_bf = u.second;
@@ -130,13 +137,13 @@ void priority_q::pull(ll lno, vector<T> &a)	//pull elements from level lno
 	{
         desc_sort((level[lno].down_bf[ind].st));
 		//take away least min_sz elements & put to a
-		//leave remaining in the buffer
 		while(a.size() < min_sz)
 		{
 			a.push_back(level[lno].down_bf[ind].st.back());
 			level[lno].down_bf[ind].st.pop_back();
 			level[lno].cnt--;
 		}
+        //leave remaining in the buffer
 		if(level[lno].down_bf[ind].st.size() == 0)
 		{
 			level[lno].fir = level[lno].down_bf[ind].next;
@@ -155,9 +162,8 @@ void priority_q::pull(ll lno, vector<T> &a)	//pull elements from level lno
 		/* Removing the first down_bf from the list */
 		level[lno].fir = level[lno].down_bf[ind].next;
 		level[lno].down_bf_cnt--;
-		ind = level[lno].fir; //ind points to the current first down_bf
-	    //sort second buffer
-        desc_sort((level[lno].down_bf[ind].st));
+		ind = level[lno].fir;                           //ind points to the current first down_bf
+        desc_sort((level[lno].down_bf[ind].st));        //sort second buffer
 		//take reqd no of elements from second buffer
 		while(a.size() < min_sz)
 		{
