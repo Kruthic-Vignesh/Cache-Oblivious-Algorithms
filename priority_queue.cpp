@@ -4,6 +4,7 @@ using namespace std;
 
 typedef long long ll;
 typedef long long T;
+const T nul = NULL;
 
 void desc_sort(vector<T>&);
 void asc_sort(vector<T>&);
@@ -49,8 +50,9 @@ class priority_q
 {
 public:
     vector<lvl> level;          //Levels numbered from 0 to level.size()-1
-    vector<T> ins_bf, del_bf;
-    void insert(T val);
+    vector<T> ins_bf, del_bf;   //insert and delete buffers
+    const ll ins_size;                //maximum size of insert and delete buffers
+    void insert(T val);         
     T del_min();
     void push(const ll, vector<T>&);
     void pull(const ll, vector<T>&);
@@ -92,9 +94,9 @@ void priority_q::push(const ll lno, vector<T>& a) //level[lno] access, push X el
             level[lno].cnt++;
             if(level[lno].down_bf[i].st.size() == level[lno].down_sz+1)     //down_bf overflow
             {
-                split(lno,i);               //split down_bf[i] into 2 down_bfs
-                /*  find median of down_bf[i]
-                    ll med = median(level[lno].down_bf[i]);*/   
+                ll med = median(level[lno].down_bf[i]);  
+                //split(lno,i);               //split down_bf[i] into 2 down_bfs
+                /*  find median of down_bf[i]*/ 
                 
                 //    2. 1 quick_sort iteration with pivot = median   
                 ll left = 0, right = level[lno].down_bf[i].st.size()-1;
@@ -117,14 +119,14 @@ void priority_q::push(const ll lno, vector<T>& a) //level[lno] access, push X el
                     if(lefti > rightj) break;
                     swap(level[lno].down_bf[i].st[lefti], level[lno].down_bf[i].st[rightj]);
                 }
-                while(right < n)
+                while(right < level[lno].down_bf[i].st.size()-1)
                 {
                     right++;
                     swap(level[lno].down_bf[i].st[lefti], level[lno].down_bf[i].st[right]);
                     lefti++;
                 }
-                    3. lower half to one buffer, upper half to the other    
-                    level[lno].down_bf[i].pivot 
+                //    3. lower half to one buffer, upper half to the other    
+                //   level[lno].down_bf[i].pivot 
                 /*
                     4. Adjust next, pivot & all counts
                     level[lno].down_bf[level[lno].mex].next = level[lno].down_bf[i].next;
@@ -281,6 +283,49 @@ void priority_q::pull(const ll lno, vector<T> &a) //pull elements from level lno
             level[lno].down_bf[curr_bf].next = -1;      //next of the new down_bf = -1
         }
     }
+}
+
+void priority_q::insert(T val)
+{
+    if(del_bf.size() < ins_size)
+    {
+        del_bf.push_back(val);
+        return;
+    }
+    del_bf.push_back(val);
+    asc_sort(del_bf);
+    ll push_ins_bf = del_bf.back();
+    del_bf.pop_back();
+    ins_bf.push_back(push_ins_bf);
+    if(ins_bf.size() == ins_size)
+    {
+        push(0, ins_bf);
+        ins_bf.clear();
+    }
+}
+
+T priority_q::del_min()
+{
+    if(del_bf.size() == 0)
+    {
+        pull(0, del_bf);
+        while(ins_bf.size() > 0)
+        {
+            del_bf.push_back(ins_bf.back());
+            ins_bf.pop_back();
+        }
+        if(del_bf.size() == 0) return nul;
+    }
+    desc_sort(del_bf);
+    T ret = del_bf.back();
+    del_bf.pop_back();
+    asc_sort(del_bf);
+    while(del_bf.size() > ins_size)
+    {
+        ins_bf.push_back(del_bf.back());
+        del_bf.pop_back();
+    }
+    return ret;
 }
 
 int main()
