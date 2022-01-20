@@ -5,8 +5,6 @@
 
 //#include <MedianFind.h>
 
-#define N 1000000000
-
 using namespace std;
 
 typedef long long ll;
@@ -36,8 +34,8 @@ public:
     float pivot;
     vector<ll> bckt;
 
-    bucket() {
-        pivot = N;
+    bucket(ll i) {
+        pivot = i;
     }
 };
 
@@ -52,8 +50,8 @@ void distributeBckts(vector<bucket>& bckts, ll arr[], ll& size, ll& rootSize, ll
             bckts.pop_back();
         }
 
-        bucket tempBkt;
-        if (bckts.size() > j) {
+        bucket tempBkt(0);
+        if (bckts.size() == j + 1) {
             tempBkt = bckts[j];
             bckts.pop_back();
         }
@@ -74,8 +72,7 @@ void distributeBckts(vector<bucket>& bckts, ll arr[], ll& size, ll& rootSize, ll
                 if (bnums[p] > j)
                     bnums[p]++;
 
-            bucket tempBkt2;
-            tempBkt2.pivot = tempBkt.pivot;
+            bucket tempBkt2(tempBkt.pivot);
             tempBkt.pivot = findMedian(tempBkt.bckt);
 
             ll size1 = tempBkt.bckt.size() / 2;
@@ -169,6 +166,14 @@ void distributionSort(ll arr[], ll size) {
         bnums[i] = 0;
 
     vector<bucket> bckts;
+
+    ll arrMax = arr[0];
+    for (ll i = 0; i < size; i++)
+        if (arr[i] > arrMax)
+            arrMax = arr[i];
+
+    bucket b(arrMax + 1);
+    bckts.push_back(b);
 
     distributeBckts(bckts, arr, size, rootSize, nextSubarr, bnums, noSubarr, 0, 0, noSubarr);
 
