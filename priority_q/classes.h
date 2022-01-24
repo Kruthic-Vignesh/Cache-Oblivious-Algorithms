@@ -43,10 +43,7 @@ public:
 
         //Add later
     }
-    pair<ll,ll> last_down_bf();
-};
-
-pair<ll,ll> 
+}; 
 
 class priority_q
 {
@@ -63,10 +60,10 @@ public:
     void make_newlvl(ll,vector<T>&);
     void push_to_upbf(ll);
     pair<ll,ll> last_down_bf(ll);
-    void quicksort(ll lno, ll i, ll med);
+    void quicksort(ll lno, ll, ll);
     void reg_pull(const ll lno, vector<T> &a);
     ll pull_from_above(const ll lno, vector<T> &a, vector<T> &b);
-    void refill_downbf(const ll lno, vector<ll> &b, ll);
+    void refill_downbf(const ll, vector<ll> &, ll);
 };
 
 #endif
