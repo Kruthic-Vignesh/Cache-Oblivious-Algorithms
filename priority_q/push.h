@@ -6,7 +6,7 @@
 
 void priority_q::push_to_upbf(ll lno)
 {
-    pair<ll,ll> u = level[lno].last_down_bf();  
+    pair<ll,ll> u = last_down_bf(lno);  
     ll last_bf = u.second;
     ll prev_bf = u.first;
     for(T x: level[lno].down_bf[last_bf].st)        //transfer last down_bf to up_bf
