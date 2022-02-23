@@ -23,19 +23,18 @@ void priority_q::make_newlvl(ll lno, vector<T> &a)
 {
     if(lno == 0)
     {
-        lvl new_lvl(c);
+        level.push_back(lvl(c));
     }
     else
     {
-        lvl new_lvl(level[lno-1].up_sz);
+        level.push_back(lvl(level[lno-1].up_sz));
     }
-    level[lno].fir = 0;
-    level[lno].mex++;
-    level[lno].cnt += a.size();
-    level[lno].down_bf_cnt++;
-    level[lno].down_bf[0].st = a;
-    level[lno].down_bf[0].pivot = a.back();
-    level[lno].down_bf[0].next = -1;
+// level[lno].mex++;
+// level[lno].cnt += a.size();
+// level[lno].down_bf_cnt++;
+// level[lno].down_bf[0].st = a;
+// level[lno].down_bf[0].pivot = a.back();
+// level[lno].down_bf[0].next = -1;
     return;
 }
 
@@ -72,13 +71,26 @@ void priority_q::quicksort(ll lno, ll i, ll med)
 void priority_q::push(const ll lno, vector<T>& a) //level[lno] access, push X elements to level lno
 {
 /* asc_sort needed! */
-//    asc_sort(a);
-
-    if(lno >= level.size()) make_newlvl(lno,a);
-
-    ll ind = 0;
-    for(ll i = level[lno].fir; i != -1; i = level[lno].down_bf[i].next)
+asc_sort(a);
+/*for(ll x :a) cout<<x<<" ";
+cout<<endl;*/
+    if(lno >= level.size()) 
     {
+        make_newlvl(lno,a);
+        level[lno].fir = 0;
+        level[lno].mex++;
+        level[lno].cnt += a.size();
+        level[lno].down_bf_cnt++;
+        level[lno].down_bf[0].st = a;
+        level[lno].down_bf[0].pivot = a.back();
+        level[lno].down_bf[0].next = -1;
+// cout<<"YES"<<endl;
+        return;
+    }
+    ll ind = 0, i =level[lno].fir;
+    for(; ; i = level[lno].down_bf[i].next)
+    {
+        cout<<"\ntraversing down_bf "<<i<<"\n";
         while(ind < a.size() && a[ind] < level[lno].down_bf[i].pivot)
         {
             level[lno].down_bf[i].st.push_back(a[ind]);
@@ -86,8 +98,9 @@ void priority_q::push(const ll lno, vector<T>& a) //level[lno] access, push X el
             level[lno].cnt++;
             if(level[lno].down_bf[i].st.size() == level[lno].down_sz+1)     //down_bf overflow
             {
+                cout<<"\n\nfinding median...\n\n";
                 ll med;
-//                med = median(level[lno].down_bf[i]);  
+med = median(level[lno].down_bf[i].st);  
                 //split(lno,i);               //split down_bf[i] into 2 down_bfs
                 /*  find median of down_bf[i]*/ 
                 // @Shashwathy
@@ -95,18 +108,70 @@ void priority_q::push(const ll lno, vector<T>& a) //level[lno] access, push X el
                 quicksort(lno,i,med);
                 //    3. lower half to one buffer, upper half to the other    
                 //   level[lno].down_bf[i].pivot 
-                /*
-                    4. Adjust next, pivot & all counts
+                
+                /*  4. Adjust next, pivot & all counts */
+//check with adi
+                {
+
+                    level[lno].down_bf[level[lno].mex].pivot = level[lno].down_bf[i].pivot;
+                    while(level[lno].down_bf[level[lno].mex].st.size() < level[lno].min_sz)
+                    {
+                        level[lno].down_bf[level[lno].mex].st.push_back(level[lno].down_bf[i].st.back());
+                        level[lno].down_bf[i].st.pop_back();
+                        level[lno].down_bf[i].pivot = level[lno].down_bf[i].st.back();
+                    }
                     level[lno].down_bf[level[lno].mex].next = level[lno].down_bf[i].next;
                     level[lno].down_bf[i].next = level[lno].mex;
-                    update mex
-                */
+                    level[lno].down_bf_cnt++;
+                //    update mex
+                    cout<<endl<<"yo mama split"<<endl;
+                    cout<<"old mama = "<<i<<", new mama = "<<level[lno].mex;
+                    level[lno].mex = level[lno].down_bf.size();
+                    for(int i=0; i<level[lno].down_bf.size(); i++)
+                    {
+                        if(level[lno].down_bf[i].st.size()==0)
+                        {
+                            level[lno].mex = i;
+                            break;
+                        }
+                    }
+                    cout<<", new mex = "<<level[lno].mex<<endl<<endl;
+                }
+                
             }
             if(level[lno].down_bf_cnt == level[lno].down_cnt+1)      //too many down buffers                
                 push_to_upbf(lno);
         } 
+        if(level[lno].down_bf[i].next == -1)
+            break; 
     }
 
+    while(ind < a.size())
+    {
+        if(level[lno].down_bf[i].st.size() < level[lno].down_sz)
+        {
+            level[lno].down_bf[i].st.push_back(a[ind]);
+            level[lno].down_bf[i].pivot = max(level[lno].down_bf[i].pivot,a[ind]);
+            ind++;
+        }
+        else if(level[lno].down_bf_cnt < level[lno].down_cnt)
+        {
+            level[lno].down_bf[level[lno].mex].next = level[lno].down_bf[i].next;
+            level[lno].down_bf[i].next = level[lno].mex;
+            level[lno].down_bf_cnt++;
+            i = level[lno].mex;
+
+            level[lno].mex = level[lno].down_bf.size();
+            for(int i=0; i<level[lno].down_bf.size(); i++)
+            {
+                if(level[lno].down_bf[i].st.size()==0)
+                {
+                    level[lno].mex = i;
+                    break;
+                }
+            }
+        }
+    }
     while(ind < a.size())
     {
         level[lno].up_bf.push_back(a[ind]);
