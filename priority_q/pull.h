@@ -7,9 +7,9 @@
 void priority_q::reg_pull(const ll lno, vector<T> &a)
 {
     ll ind = level[lno].fir;
-    ll min_sz = (level[lno].down_sz + 1)/2;
+    ll min_sz = level[lno].min_sz;
 
-//    desc_sort((level[lno].down_bf[ind].st));
+desc_sort((level[lno].down_bf[ind].st));
     //take away least min_sz elements & put to a
     while(a.size() < min_sz)
     {
@@ -44,7 +44,7 @@ ll priority_q::pull_from_above(const ll lno, vector<T> &a, vector<T> &b)
         b.push_back(tt);
     }
     level[lno].up_bf.clear();
-//    asc_sort(b);                        //sort b and refill the first U elements into the up_bf;
+asc_sort(b);                        //sort b and refill the first U elements into the up_bf;
 
     ll how_many_pulled = 0;
     for(ll i=0; a.size() < level[lno].min_sz && i < b.size(); i++) //taking least [X]-Y keys and putting into a
@@ -97,10 +97,18 @@ void priority_q::pull(const ll lno, vector<T> &a) //pull elements from level lno
     if(level[lno].down_bf_cnt > 0 && level[lno].down_bf[ind].st.size() >= level[lno].min_sz)
     {
         reg_pull(lno,a);
+        cout<<endl<<"Priint a "<<endl;
+        for(ll x : a)
+        {
+            cout<<x<<" ";
+        }
+        cout<<endl;
+        return;
     }
     else if(level[lno].down_bf_cnt > 1)
     {
         //pull first buffer fully
+cout<<"second pull"<<endl;
         while(level[lno].down_bf[ind].st.size() > 0)
         {
             a.push_back(level[lno].down_bf[ind].st.back());
