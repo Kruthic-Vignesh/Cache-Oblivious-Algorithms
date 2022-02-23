@@ -24,19 +24,33 @@ void priority_q::insert(T val)
         return;
     }
     del_bf.push_back(val);
-//    asc_sort(del_bf);
+asc_sort(del_bf);
     ll push_ins_bf = del_bf.back();
     del_bf.pop_back();
     ins_bf.push_back(push_ins_bf);
     if(ins_bf.size() == ins_size)
     {
+        cout<<"\nOutputting INS BF: ";
+        for(ll x : ins_bf) cout<<x<<' ';
+        cout<<endl;
         push(0, ins_bf);
         ins_bf.clear();
+    }
+    else 
+    {
+        cout<<"Insertion done in ins_bf!\n\n";
     }
 }
 
 T priority_q::del_min()
 {
+cout<<endl<<"ins_bf"<<endl;
+for(ll x : ins_bf)
+    cout<<x<<" ";
+cout<<endl;
+    if(del_bf.size() == 0) return nul;
+    ll rett = del_bf.back();
+    del_bf.pop_back();
     if(del_bf.size() == 0)
     {
         pull(0, del_bf);
@@ -45,18 +59,20 @@ T priority_q::del_min()
             del_bf.push_back(ins_bf.back());
             ins_bf.pop_back();
         }
-        if(del_bf.size() == 0) return nul;
     }
-//    desc_sort(del_bf);
-    T ret = del_bf.back();
-    del_bf.pop_back();
-//    asc_sort(del_bf);
+    // T ret = del_bf.back();
+    // del_bf.pop_back();
+asc_sort(del_bf);
     while(del_bf.size() > ins_size)
     {
         ins_bf.push_back(del_bf.back());
         del_bf.pop_back();
     }
-    return ret;
+cout<<"del_bf"<<endl;
+for(ll x : del_bf)
+    cout<<x<<" ";
+cout<<endl;
+    return rett;
 }
 
 
