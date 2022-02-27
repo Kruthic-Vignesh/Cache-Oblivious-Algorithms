@@ -90,12 +90,13 @@ public:
     void split(const ll, const ll);
     void traverse(ll lno)
     {
+        cout<<"TRAVERSING lvl "<<lno<<endl<<endl;
         if(lno >= level.size()) 
         {
             cout<<endl;
             return;
         }
-        cout<<"TRAVERSE\n";
+        cout<<"down_bf\n";
         cout<<"down_bf_size "<<level[lno].down_bf_cnt<<" "<<level[lno].min_sz<<" "<<level[lno].down_cnt<<endl;
         ll i = level[lno].fir;
         if(i == -1) return;
@@ -108,6 +109,9 @@ public:
             if(level[lno].down_bf[i].next == -1) break;
             i = level[lno].down_bf[i].next;
         }
+        cout<<endl<<endl;
+        cout<<"up_bf\n";
+        for(ll x:level[lno].up_bf)  cout<<x<<' ';
         cout<<endl<<endl;
     }
 
