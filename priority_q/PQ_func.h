@@ -30,15 +30,16 @@ asc_sort(del_bf);
     ins_bf.push_back(push_ins_bf);
     if(ins_bf.size() == ins_size)
     {
-        cout<<"\nOutputting INS BF: ";
+        cout<<"\nInsertion Buffer Full! : ";
         for(ll x : ins_bf) cout<<x<<' ';
         cout<<endl;
+        cout<<"Pushing to level 0...\n";
         push(0, ins_bf);
         ins_bf.clear();
     }
     else 
     {
-        cout<<"Insertion done in ins_bf!\n\n";
+        cout<<"Inserted "<<val<<" in ins_bf!\n\n";
     }
 }
 
