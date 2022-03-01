@@ -32,10 +32,52 @@ int glr(int l, int r)
 int32_t main()
 {
     priority_q a;
-    for(int i=0; i<40; i++)
-        a.insert(glr(1,200));
+    // ifstream xxx("t10000.txt");
+    // ofstream yyy("TT10000.txt");
+    // while(xxx)
+    // {
+    //     char f;
+    //     xxx.get(f);
+    //     if(f!=',')
+    //         yyy.put(f);
+    //     else
+    //         yyy.put(' ');
+        
+    // }
     
-    a.traverse(0);
-    a.traverse(1);
-    a.traverse(2);
+    
+
+    // ofstream fout("t2000000.txt");
+    // for(ll i=0; i<2000000; i++)
+    // {
+    //     fout<<glr(1,1000000000)<<' ';
+    // }
+    // fout.close();
+
+    freopen("t2000000.txt","r",stdin);
+    freopen("o2000000.txt","w",stdout);
+    vector<ll> v;
+    for(int i=0; i<2000000; i++)
+    {
+        int val;
+        cin>>val;
+        v.push_back(val);
+        a.insert(val);
+        //if(v[i]==993)
+            //cout<<i<<' ';
+    }
+    
+    cout<<"\n\n\nFINAL TRAVERSAL\n\n\n";
+    a.final_traverse(0);
+    a.final_traverse(1);
+    a.final_traverse(2);  
+    a.final_traverse(3);
+    a.final_traverse(4);
+    a.final_traverse(5);
+    a.final_traverse(6);
+    a.final_traverse(7);
+
+    //for(ll xxxx:v)
+    //    cout<<xxxx<<' ';
+
 }
