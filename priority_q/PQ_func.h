@@ -8,11 +8,15 @@ using namespace std;
 pair<ll,ll> priority_q::last_down_bf(ll lno)
 {
     ll i = level[lno].fir, pre = -1;
+    cout<<"\nFinding last down_bf\n\n";
     while(level[lno].down_bf[i].next != -1)
     {
+        cout<<i<<',';
         pre = i; 
         i = level[lno].down_bf[i].next;
     }
+    cout<<endl;
+    cout<<"last down_bf is "<<i<<"\n\n";
     return {pre,i};
 }
 
@@ -21,6 +25,7 @@ void priority_q::insert(T val)
     if(del_bf.size() < ins_size)
     {
         del_bf.push_back(val);
+        cout<<"Inserted "<<val<<" in ins/del_bf!\n\n";
         return;
     }
     del_bf.push_back(val);
@@ -34,12 +39,13 @@ asc_sort(del_bf);
         for(ll x : ins_bf) cout<<x<<' ';
         cout<<endl;
         cout<<"Pushing to level 0...\n";
+        traverse(0);
         push(0, ins_bf);
         ins_bf.clear();
     }
     else 
     {
-        cout<<"Inserted "<<val<<" in ins_bf!\n\n";
+        cout<<"Inserted "<<val<<" in ins/del_bf!\n\n";
     }
 }
 
