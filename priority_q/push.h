@@ -14,9 +14,7 @@ void priority_q::push_to_upbf(ll lno)
         level[lno].up_bf.push_back(x);
         level[lno].cnt--;
     }
-    level[lno].down_bf[last_bf].st.clear();
-    level[lno].down_bf_cnt--;
-    level[lno].down_bf[prev_bf].next = -1;
+    traverse(lno);
 }
 
 void priority_q::make_newlvl(ll lno, vector<T> &a)
@@ -78,8 +76,8 @@ void priority_q::push(const ll lno, vector<T>& a) //level[lno] access, push X el
     cout << "Push function at level "<<lno<<endl;
 /* asc_sort needed! */
 asc_sort(a);
-/*for(ll x :a) cout<<x<<" ";
-cout<<endl;*/
+for(ll x :a) cout<<x<<" ";
+cout<<endl;
     if(lno >= level.size()) 
     {
         make_newlvl(lno,a);
@@ -99,7 +97,9 @@ cout<<endl;*/
         cout<<"\ngoing thru down_bf "<<i<<"\n";
         while(ind < a.size() && a[ind] < level[lno].down_bf[i].pivot)
         {
+            cout<<"Inserted "<<a[ind]<<", its pivot = "<<level[lno].down_bf[i].pivot<<endl;
             level[lno].down_bf[i].st.push_back(a[ind]);
+            level[lno].down_bf[i].pivot = max(level[lno].down_bf[i].pivot,a[ind]);
             ind++;
             level[lno].cnt++;
             if(level[lno].down_bf[i].st.size() == level[lno].down_sz+1)     //down_bf overflow
@@ -119,22 +119,25 @@ med = median(level[lno].down_bf[i].st);
                 /*  4. Adjust next, pivot & all counts */
 //check with adi
                 {
-                    
+                    //level[lno].down_bf[level[lno].mex].st.clear();
                     level[lno].down_bf[level[lno].mex].pivot = level[lno].down_bf[i].pivot;
+                    level[lno].down_bf[i].pivot = med;
                     cout<<"\nNew bf's pivot is = "<<level[lno].down_bf[level[lno].mex].pivot<<endl;
-                    while(level[lno].down_bf[level[lno].mex].st.size() < level[lno].min_sz)
+                    cout<<"\nOld bf's pivot is = "<<level[lno].down_bf[i].pivot<<endl;
+                    cout<<"\nNew bf's sz is = "<<level[lno].down_bf[level[lno].mex].st.size()<<endl;
+                    while(level[lno].down_bf[level[lno].mex].st.size() < level[lno].min_sz || level[lno].down_bf[i].st.back() > med)
                     {
                         level[lno].down_bf[level[lno].mex].st.push_back(level[lno].down_bf[i].st.back());
                         level[lno].down_bf[i].st.pop_back();
-                        level[lno].down_bf[i].pivot = level[lno].down_bf[i].st.back();
                     }
                     level[lno].down_bf[level[lno].mex].next = level[lno].down_bf[i].next;
                     level[lno].down_bf[i].next = level[lno].mex;
-                    i = level[lno].mex;
+                    
                     level[lno].down_bf_cnt++;
                 //    update mex
-                    cout<<endl<<"yo mama split"<<endl;
-                    cout<<"old mama = "<<i<<", new mama = "<<level[lno].mex;
+                    cout<<endl<<"buffer split"<<endl;
+                    cout<<"left = "<<i<<", right = "<<level[lno].mex;
+                    //i = level[lno].mex;
                     level[lno].mex = level[lno].down_bf.size();
                     for(int j=0; j<level[lno].down_bf.size(); j++)
                     {
@@ -145,72 +148,102 @@ med = median(level[lno].down_bf[i].st);
                         }
                     }
                     cout<<", new mex = "<<level[lno].mex<<endl<<endl;
+                    traverse(0);
                 }
                 
             }
             if(level[lno].down_bf_cnt == level[lno].down_cnt+1)      //too many down buffers                
+            {
                 push_to_upbf(lno);
+                pair<ll,ll> u = last_down_bf(lno);  
+                ll last_bf = u.second;
+                ll prev_bf = u.first;
+                level[lno].down_bf[last_bf].st.clear();
+                level[lno].down_bf[last_bf].pivot = INT_MIN;
+                level[lno].mex = last_bf;
+                level[lno].down_bf_cnt--;
+                level[lno].down_bf[prev_bf].next = -1;
+                // i = prev_bf;
+                cout<<"PUSH TO UPBF, last_bf size "<<level[lno].down_bf[last_bf].st.size()<<endl;
+            }
         } 
         if(level[lno].down_bf[i].next == -1)
             break; 
     }
 
-    while(ind < a.size())
+    if(lno+1 == level.size() && level[lno].up_bf.empty())
     {
-        level[lno].down_bf[i].st.push_back(a[ind]);
-        level[lno].down_bf[i].pivot = max(level[lno].down_bf[i].pivot,a[ind]);
-        ind++;
-        if(level[lno].down_bf[i].st.size() > level[lno].down_sz)
+        while(ind < a.size())
         {
-            cout<<"\n\nOVERFLOWW BROO!\n\n";
-            if(level[lno].down_bf[i].st.size() > level[lno].down_sz)     //down_bf overflow
+            cout<<"Inserted "<<a[ind]<<", its pivot = "<<level[lno].down_bf[i].pivot<<endl;
+            level[lno].down_bf[i].st.push_back(a[ind]);
+            level[lno].down_bf[i].pivot = max(level[lno].down_bf[i].pivot,a[ind]);
+            ind++;
+            if(level[lno].down_bf[i].st.size() > level[lno].down_sz)
             {
-                cout<<"\n\nfinding median...\n";
-                ll med;
-med = median(level[lno].down_bf[i].st);  
-                //split(lno,i);               //split down_bf[i] into 2 down_bfs
-                /*  find median of down_bf[i]*/ 
-                // @Shashwathy
-                //    2. 1 quick_sort iteration with pivot = median   
-                quicksort(lno,i,med);
-                //    3. lower half to one buffer, upper half to the other    
-                //   level[lno].down_bf[i].pivot 
-                
-                /*  4. Adjust next, pivot & all counts */
-//check with adi
+                cout<<"\n\nOVERFLOWW BROO!\n\n";
+                if(level[lno].down_bf[i].st.size() > level[lno].down_sz)     //down_bf overflow
                 {
+                    cout<<"\n\nfinding median...\n";
+                    ll med;
+    med = median(level[lno].down_bf[i].st);  
+                    //split(lno,i);               //split down_bf[i] into 2 down_bfs
+                    /*  find median of down_bf[i]*/ 
+                    // @Shashwathy
+                    //    2. 1 quick_sort iteration with pivot = median   
+                    quicksort(lno,i,med);
+                    //    3. lower half to one buffer, upper half to the other    
+                    //   level[lno].down_bf[i].pivot 
                     
-                    level[lno].down_bf[level[lno].mex].pivot = level[lno].down_bf[i].pivot;
-                    cout<<"\nNew bf's pivot is = "<<level[lno].down_bf[level[lno].mex].pivot<<endl;
-                    while(level[lno].down_bf[level[lno].mex].st.size() < level[lno].min_sz)
+                    /*  4. Adjust next, pivot & all counts */
+    //check with adi
                     {
-                        level[lno].down_bf[level[lno].mex].st.push_back(level[lno].down_bf[i].st.back());
-                        level[lno].down_bf[i].st.pop_back();
-                        level[lno].down_bf[i].pivot = level[lno].down_bf[i].st.back();
-                    }
-                    level[lno].down_bf[level[lno].mex].next = level[lno].down_bf[i].next;
-                    level[lno].down_bf[i].next = level[lno].mex;
-                    i = level[lno].mex;
-                    level[lno].down_bf_cnt++;
-                //    update mex
-                    cout<<endl<<"yo mama split"<<endl;
-                //    cout<<"old mama = "<<i<<", new mama = "<<level[lno].mex;
-                    level[lno].mex = level[lno].down_bf.size();
-                    cout<<"size = "<<level[lno].mex;
-                    for(int j=0; j<level[lno].down_bf.size(); j++)
-                    {
-                        if(level[lno].down_bf[j].st.size()==0)
+                        
+                        level[lno].down_bf[level[lno].mex].pivot = level[lno].down_bf[i].pivot;
+                        level[lno].down_bf[i].pivot = med;
+                        cout<<"\nNew bf's pivot is = "<<level[lno].down_bf[level[lno].mex].pivot<<endl;
+                        while(level[lno].down_bf[level[lno].mex].st.size() < level[lno].min_sz || level[lno].down_bf[i].st.back() > med)
                         {
-                            level[lno].mex = j;
-                            break;
+                            level[lno].down_bf[level[lno].mex].st.push_back(level[lno].down_bf[i].st.back());
+                            level[lno].down_bf[i].st.pop_back();
                         }
+                        level[lno].down_bf[level[lno].mex].next = level[lno].down_bf[i].next;
+                        level[lno].down_bf[i].next = level[lno].mex;
+                        
+                        level[lno].down_bf_cnt++;
+                    //    update mex
+                        cout<<endl<<"buffer split"<<endl;
+                        cout<<"left = "<<i<<", right = "<<level[lno].mex;
+                        i = level[lno].mex;
+                        level[lno].mex = level[lno].down_bf.size();
+                        for(int j=0; j<level[lno].down_bf.size(); j++)
+                        {
+                            if(level[lno].down_bf[j].st.size()==0)
+                            {
+                                level[lno].mex = j;
+                                break;
+                            }
+                        }
+                        cout<<", new mex = "<<level[lno].mex<<endl<<endl;
                     }
-                    cout<<", new mex = "<<level[lno].mex<<endl<<endl;
+                    
+                }
+                if(level[lno].down_bf_cnt == level[lno].down_cnt+1)      //too many down buffers                
+                {
+                    push_to_upbf(lno);
+                    pair<ll,ll> u = last_down_bf(lno);  
+                    ll last_bf = u.second;
+                    ll prev_bf = u.first;
+                    level[lno].down_bf[last_bf].st.clear();
+                    level[lno].down_bf[last_bf].pivot = INT_MIN;
+                    level[lno].mex = last_bf;
+                    level[lno].down_bf_cnt--;
+                    level[lno].down_bf[prev_bf].next = -1;
+                    i = prev_bf;
+                    cout<<"PUSH TO UPBF, last_bf size "<<level[lno].down_bf[last_bf].st.size()<<endl;
                 }
                 
             }
-            if(level[lno].down_bf_cnt == level[lno].down_cnt+1)      //too many down buffers                
-                push_to_upbf(lno);
         }
     }
     while(ind < a.size())
