@@ -2,7 +2,7 @@
 #include "PQ_func.h"
 #include "push.h"
 #include "pull.h"
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 
@@ -32,52 +32,41 @@ int glr(int l, int r)
 int32_t main()
 {
     priority_q a;
-    // ifstream xxx("t10000.txt");
-    // ofstream yyy("TT10000.txt");
-    // while(xxx)
-    // {
-    //     char f;
-    //     xxx.get(f);
-    //     if(f!=',')
-    //         yyy.put(f);
-    //     else
-    //         yyy.put(' ');
-        
-    // }
-    
-    
+    int N = 500;
+    priority_queue<ll, vector<ll>, greater<ll>> v; 
 
-    // ofstream fout("t2000000.txt");
-    // for(ll i=0; i<2000000; i++)
-    // {
-    //     fout<<glr(1,1000000000)<<' ';
-    // }
-    // fout.close();
-
-    freopen("t2000000.txt","r",stdin);
-    freopen("o2000000.txt","w",stdout);
-    vector<ll> v;
-    for(int i=0; i<2000000; i++)
+    ll cc = 0, vv = 0;
+    bool ch = true;
+    freopen("in1.txt", "r", stdin);
+    int val;
+    for(int i = 0; i < 500; i++)
     {
-        int val;
+        // int val = glr(1, 12874943);
         cin>>val;
-        v.push_back(val);
-        a.insert(val);
-        //if(v[i]==993)
-            //cout<<i<<' ';
+        // str.push_back(val);
+        // cout<<val<<" ";
+        if(val%3 == 1 && v.size() > 0)
+        {
+            ll v1 = v.top(); v.pop();
+            ll v2 = a.del_min();
+            cout<<"popped "<<v1<<" "<<v2<<endl;
+            if(v1 != v2) ch = false;
+        }
+        else
+        {
+            v.push(val);
+            a.insert(val);
+        }
     }
-    
-    cout<<"\n\n\nFINAL TRAVERSAL\n\n\n";
-    a.final_traverse(0);
-    a.final_traverse(1);
-    a.final_traverse(2);  
-    a.final_traverse(3);
-    a.final_traverse(4);
-    a.final_traverse(5);
-    a.final_traverse(6);
-    a.final_traverse(7);
-
-    //for(ll xxxx:v)
-    //    cout<<xxxx<<' ';
+    while(v.size() > 0)
+    {
+        ll v1 = v.top(); v.pop();
+        ll v2 = a.del_min();
+        if(v1 != v2) ch = false;
+    }
+    // ofstream fout("o4.txt");
+    if(ch) cout<<"MY WAIFU IS AKARI"<<endl;
+    // fout.close();
+    fclose(stdin);
 
 }
