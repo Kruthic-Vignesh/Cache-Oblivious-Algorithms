@@ -33,7 +33,7 @@ asc_sort(del_bf);
     ll push_ins_bf = del_bf.back();
     del_bf.pop_back();
     ins_bf.push_back(push_ins_bf);
-    if(ins_bf.size() == ins_size)
+    if(ins_bf.size() >= ins_size)
     {
         cout<<"\nInsertion Buffer Full! : ";
         for(ll x : ins_bf) cout<<x<<' ';
@@ -56,6 +56,7 @@ for(ll x : ins_bf)
     cout<<x<<" ";
 cout<<endl;
     if(del_bf.size() == 0) return nul;
+desc_sort(del_bf);
     ll rett = del_bf.back();
     del_bf.pop_back();
     if(del_bf.size() == 0)
@@ -75,6 +76,10 @@ asc_sort(del_bf);
         ins_bf.push_back(del_bf.back());
         del_bf.pop_back();
     }
+cout<<endl<<"del_min  ins_bf"<<endl;
+for(ll x : ins_bf)
+    cout<<x<<" ";
+cout<<endl;
 cout<<"del_bf"<<endl;
 for(ll x : del_bf)
     cout<<x<<" ";
