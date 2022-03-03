@@ -27,7 +27,7 @@ void priority_q::make_newlvl(ll lno, vector<T> &a)
     {
         level.push_back(lvl(level[lno-1].up_sz));
     }
-// level[lno].mex++;
+// level[lno].mex = 1;
 // level[lno].cnt += a.size();
 // level[lno].down_bf_cnt++;
 // level[lno].down_bf[0].st = a;
@@ -82,7 +82,7 @@ cout<<endl;
     {
         make_newlvl(lno,a);
         level[lno].fir = 0;
-        level[lno].mex++;
+        level[lno].mex = 1;
         level[lno].cnt += a.size();
         level[lno].down_bf_cnt++;
         level[lno].down_bf[0].st = a;
@@ -92,6 +92,18 @@ cout<<endl;
         return;
     }
     ll ind = 0, i =level[lno].fir;
+    if(i == -1)
+    {
+        i = 0;
+        level[lno].fir = 0;
+        level[lno].mex = 1;
+        level[lno].cnt += a.size();
+        level[lno].down_bf_cnt++;
+        level[lno].down_bf[0].st = a;
+        level[lno].down_bf[0].pivot = a.back();
+        level[lno].down_bf[0].next = -1;
+        return;
+    }
     for(; ; i = level[lno].down_bf[i].next)
     {
         cout<<"\ngoing thru down_bf "<<i<<"\n";
@@ -102,7 +114,7 @@ cout<<endl;
             level[lno].down_bf[i].pivot = max(level[lno].down_bf[i].pivot,a[ind]);
             ind++;
             level[lno].cnt++;
-            if(level[lno].down_bf[i].st.size() == level[lno].down_sz+1)     //down_bf overflow
+            if(level[lno].down_bf[i].st.size() >= level[lno].down_sz+1)     //down_bf overflow
             {
                 cout<<"\n\nOVERFLOWW BRUH!\n\n";
                 cout<<"\n\nfinding median...\n";
@@ -120,6 +132,7 @@ med = median(level[lno].down_bf[i].st);
 //check with adi
                 {
                     //level[lno].down_bf[level[lno].mex].st.clear();
+                    cout<<"mex is "<<level[lno].mex<<" i is "<<i<<endl;
                     level[lno].down_bf[level[lno].mex].pivot = level[lno].down_bf[i].pivot;
                     level[lno].down_bf[i].pivot = med;
                     cout<<"\nNew bf's pivot is = "<<level[lno].down_bf[level[lno].mex].pivot<<endl;
