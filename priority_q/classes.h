@@ -25,6 +25,13 @@ void desc_sort(vector<ll>& a)
     return;
 }
 
+ostream& operator<<(ostream& os, const vector<ll>& dt)
+{
+    for(ll x : dt) cout<<x<<" ";
+    cout<<endl;
+    return os;
+}
+
 ll median(vector<ll> a)
 {
     asc_sort(a);
@@ -148,8 +155,10 @@ public:
     pair<ll,ll> last_down_bf(ll);
     void quicksort(ll lno, ll, ll);
     void reg_pull(const ll lno, vector<T> &a);
-    ll pull_from_above(const ll lno, vector<T> &a, vector<T> &b);
+    ll pull_from_above(const ll lno, vector<T> &a, vector<T> &b, ll&);
+    void pull_to_fill(const ll lno, vector<T> &b, ll&);
     void refill_downbf(const ll, vector<ll> &, ll);
+    void p_b();
 };
 
 #endif
