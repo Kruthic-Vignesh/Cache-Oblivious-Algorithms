@@ -8,15 +8,25 @@ void priority_q::reg_pull(const ll lno, vector<T> &a)
 {
     ll ind = level[lno].fir;
     ll min_sz = level[lno].min_sz;
-
-desc_sort((level[lno].down_bf[ind].st));
+    cout<<min_sz<<endl;
+    cout<<"DBF\n";
+    for(ll x:level[lno].down_bf[ind].st)
+    {
+        cout<<x<<' ';
+    }
+    cout<<endl;
+    desc_sort((level[lno].down_bf[ind].st));
     // take away least min_sz elements & put to a
     while(a.size() < min_sz)
     {
         a.push_back(level[lno].down_bf[ind].st.back());
         level[lno].down_bf[ind].st.pop_back();
         level[lno].cnt--;
+        //cout<<"yo mama so fat! ";
+        cout<<endl;
+        cout<<a.size()<<' '<<min_sz<<endl;
     }
+    //cout<<"Henlo worldo"<<endl;
     // leave remaining in the buffer
     if(level[lno].down_bf[ind].st.size() == 0)
     {
@@ -26,23 +36,49 @@ desc_sort((level[lno].down_bf[ind].st));
         level[lno].down_bf_cnt--;
         if(level[lno].mex > ind) level[lno].mex = ind;  // updating mex
 
+        //cout<<"Hello world"<<endl;
         // refilling of down buffers
-        vector<T> b;
-        ll how_many_pulled = pull_from_above(lno,a,b);
-
-        ll count = 0;   
-        for(ll i=ll(b.size())-1; i >= how_many_pulled && count < level[lno].up_sz; i--, count++)      //refilling upbuffer
+        if(level[lno].fir == -1 || !level[lno].down_bf_cnt)
         {
-            level[lno].up_bf.push_back(b[i]);
-            b.pop_back();
+            vector<T> b,c;
+            ll max_el = INT_MAX;
+            pull_to_fill(lno,b,max_el);
+
+            //cout<<"Pulled to fill!"<<endl;
+            ll count = 0;   
+            for(ll i=ll(b.size())-1; i>=0 && count < level[lno].up_sz && b[i]>max_el; i--, count++)      //refilling upbuffer
+            {
+                level[lno].up_bf.push_back(b[i]);
+                b.pop_back();
+            }
+            //cout<<"Filled up_bf!"<<endl;
+            refill_downbf(lno,b,0);
         }
-
-        refill_downbf(lno,b,how_many_pulled);
-
     }
 }
 
-ll priority_q::pull_from_above(const ll lno, vector<T> &a, vector<T> &b)
+void priority_q::pull_to_fill(const ll lno, vector<T> &b, ll &max_el)
+{   
+    level[lno].down_bf_cnt = 0;
+    level[lno].cnt = 0;
+    level[lno].fir = -1;
+    level[lno].mex = 0;
+
+    pull(lno+1, b);                     // Pull from next level
+
+    if(b.size())
+        max_el = *max_element(b.begin(),b.end());
+
+    ll u_sz = level[lno].up_bf.size();
+    for(T tt : level[lno].up_bf)        //Take elements from up_bf
+    {
+        b.push_back(tt);
+    }
+    level[lno].up_bf.clear();
+    asc_sort(b);                        //sort b and refill the first U elements into the up_bf;
+}
+
+ll priority_q::pull_from_above(const ll lno, vector<T> &a, vector<T> &b, ll &max_el)
 {
     ll ind = level[lno].fir;
 
@@ -61,6 +97,9 @@ ll priority_q::pull_from_above(const ll lno, vector<T> &a, vector<T> &b)
     level[lno].mex = 0;
 
     pull(lno+1, b);                     // Pull from next level
+
+    if(b.size())
+        max_el = *max_element(b.begin(),b.end());
 
     ll u_sz = level[lno].up_bf.size();
     for(T tt : level[lno].up_bf)        //Take elements from up_bf
@@ -120,10 +159,15 @@ void priority_q::pull(const ll lno, vector<T> &a) //pull elements from level lno
     if(lno >= level.size())     return;
 
     ll ind = level[lno].fir;
+    cout<<endl<<"Priint a before pulling from level "<<lno<<endl;
+    for(ll x : a)
+    {
+        cout<<x<<" ";
+    }
     if(/*ind != -1 && */level[lno].down_bf_cnt > 0 && level[lno].down_bf[ind].st.size() >= level[lno].min_sz)
     {
         reg_pull(lno,a);
-        cout<<endl<<"Priint a "<<endl;
+        cout<<endl<<"Priint a after pulling from level "<<lno<<endl;
         for(ll x : a)
         {
             cout<<x<<" ";
@@ -153,10 +197,11 @@ cout<<"second pull"<<endl;
     else
     {
         vector<T> b;
-        ll how_many_pulled = pull_from_above(lno,a,b);
+        ll max_el = INT_MAX;
+        ll how_many_pulled = pull_from_above(lno,a,b,max_el);
 
         ll count = 0;   
-        for(ll i=ll(b.size())-1; i >= how_many_pulled && count < level[lno].up_sz; i--, count++)      //refilling upbuffer
+        for(ll i=ll(b.size())-1; i >= how_many_pulled && count < level[lno].up_sz && b[i]>max_el; i--, count++)      //refilling upbuffer
         {
             level[lno].up_bf.push_back(b[i]);
             b.pop_back();
