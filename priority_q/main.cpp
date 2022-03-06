@@ -38,6 +38,8 @@ int32_t main()
     ll cc = 0, vv = 0;
     bool ch = true;
     freopen("in1.txt", "r", stdin);
+    freopen("out1.txt", "w", stdout);
+    ofstream fout("outt1.txt");
     int val;
     for(int i = 0; i < 500; i++)
     {
@@ -49,24 +51,49 @@ int32_t main()
         {
             ll v1 = v.top(); v.pop();
             ll v2 = a.del_min();
-            cout<<"popped "<<v1<<" "<<v2<<endl;
+            fout<<"DELETION "<<v1<<" "<<v2<<endl;
             if(v1 != v2) ch = false;
+            if(!ch)
+            {
+                fout<<"You are wrong!\n";
+                fout<<i<<endl;
+                exit(0);
+            }
         }
         else
         {
+            fout<<"INSERTION OF VAL! "<<val<<endl;
             v.push(val);
             a.insert(val);
+        }
+
+        cout<<" a.ins_bf.size()  " << a.ins_bf.size()<<endl;
+
+        if(a.ins_bf.size()>5)
+        {
+            cout<<"INS BF OVERFLOW!!!!\n";
+            for(ll x:a.ins_bf)
+                cout<<x<<' ';
+            exit(0);
         }
     }
     while(v.size() > 0)
     {
         ll v1 = v.top(); v.pop();
         ll v2 = a.del_min();
+        fout<<"End of the world "<<v1<<" "<<v2<<endl;
         if(v1 != v2) ch = false;
+
+        if(!ch)
+        {
+            fout<<"You are wrong!\n";
+            exit(0);
+        }
     }
     // ofstream fout("o4.txt");
     if(ch) cout<<"MY WAIFU IS AKARI"<<endl;
     // fout.close();
     fclose(stdin);
+    fclose(stdout);
 
 }
