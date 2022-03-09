@@ -29,25 +29,21 @@ int glr(int l, int r)
     return x;
 }
 
+priority_q a;
+priority_queue<ll, vector<ll>, greater<ll>> v; 
+
 int32_t main()
 {
-    priority_q a;
     int N = 500;
-    priority_queue<ll, vector<ll>, greater<ll>> v; 
-
     ll cc = 0, vv = 0;
     bool ch = true;
-    freopen("in1.txt", "r", stdin);
-    freopen("out1.txt", "w", stdout);
-    ofstream fout("outt1.txt");
+    ifstream fin("input02.txt");
+    freopen("output02.txt", "w", stdout);
+    ofstream fout("outtie02.txt");
     int val;
-    for(int i = 0; i < 500; i++)
+    while(fin>>val)
     {
-        // int val = glr(1, 12874943);
-        cin>>val;
-        // str.push_back(val);
-        // cout<<val<<" ";
-        if(val%3 == 1 && v.size() > 0)
+        if(val%3 == 0 && v.size() > 0)
         {
             ll v1 = v.top(); v.pop();
             ll v2 = a.del_min();
@@ -56,7 +52,7 @@ int32_t main()
             if(!ch)
             {
                 fout<<"You are wrong!\n";
-                fout<<i<<endl;
+                //fout<<i<<endl;
                 exit(0);
             }
         }
@@ -91,7 +87,7 @@ int32_t main()
         }
     }
     // ofstream fout("o4.txt");
-    if(ch) cout<<"MY WAIFU IS AKARI"<<endl;
+    if(ch) cout<<"\n\nMY WAIFU IS AKARI\n\n"<<endl;
     // fout.close();
     fclose(stdin);
     fclose(stdout);
