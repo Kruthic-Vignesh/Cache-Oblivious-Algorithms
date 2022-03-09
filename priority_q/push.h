@@ -20,20 +20,9 @@ void priority_q::push_to_upbf(ll lno)
 void priority_q::make_newlvl(ll lno, vector<T> &a)
 {
     if(lno == 0)
-    {
         level.push_back(lvl(c));
-    }
     else
-    {
         level.push_back(lvl(level[lno-1].up_sz));
-    }
-// level[lno].mex = 1;
-// level[lno].cnt += a.size();
-// level[lno].down_bf_cnt++;
-// level[lno].down_bf[0].st = a;
-// level[lno].down_bf[0].pivot = a.back();
-// level[lno].down_bf[0].next = -1;
-    return;
 }
 
 void priority_q::quicksort(ll lno, ll i, ll med)
@@ -50,6 +39,7 @@ void priority_q::quicksort(ll lno, ll i, ll med)
         }
         left++;
     }
+    
     ll lefti = 0, rightj = right;
     while(lefti < rightj)
     {
@@ -131,6 +121,15 @@ med = median(level[lno].down_bf[i].st);
                 /*  4. Adjust next, pivot & all counts */
 //check with adi
                 {
+                    level[lno].mex = level[lno].down_bf.size();
+                    for(int j=0; j<level[lno].down_bf.size(); j++)
+                    {
+                        if(level[lno].down_bf[j].st.size()==0)
+                        {
+                            level[lno].mex = j;
+                            break;
+                        }
+                    }
                     //level[lno].down_bf[level[lno].mex].st.clear();
                     cout<<"mex is "<<level[lno].mex<<" i is "<<i<<endl;
                     level[lno].down_bf[level[lno].mex].pivot = level[lno].down_bf[i].pivot;
@@ -211,7 +210,15 @@ med = median(level[lno].down_bf[i].st);
                     /*  4. Adjust next, pivot & all counts */
     //check with adi
                     {
-                        
+                        level[lno].mex = level[lno].down_bf.size();
+                        for(int j=0; j<level[lno].down_bf.size(); j++)
+                        {
+                            if(level[lno].down_bf[j].st.size()==0)
+                            {
+                                level[lno].mex = j;
+                                break;
+                            }
+                        }
                         level[lno].down_bf[level[lno].mex].pivot = level[lno].down_bf[i].pivot;
                         level[lno].down_bf[i].pivot = med;
                         cout<<"\nNew bf's pivot is = "<<level[lno].down_bf[level[lno].mex].pivot<<endl;
