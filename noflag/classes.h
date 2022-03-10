@@ -78,8 +78,6 @@ public:
         mex = 0;
         bf empty_buf;
         for(int i = 0; i <= down_cnt; i++) down_bf.push_back(empty_buf);
-// cout<<"done"<<endl;
-//Add later
     }
 }; 
 
@@ -89,7 +87,6 @@ public:
     vector<lvl> level;          //Levels numbered from 0 to level.size()-1
     vector<T> ins_bf, del_bf;   //insert and delete buffers
     const ll ins_size = 5;                //maximum size of insert and delete buffers
-// implement priority_q size
     void insert(T val);         
     T del_min();
     void push(const ll, vector<T>&);
