@@ -2,7 +2,11 @@
 #include "PQ_func.h"
 #include "push.h"
 #include "pull.h"
-#include <bits/stdc++.h>
+#include <queue>
+#include <ctime>
+#include <random>
+#include <chrono>
+#include <fstream>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 
@@ -38,11 +42,11 @@ int32_t main()
     ll cc = 0, vv = 0;
     bool ch = true;
     ifstream fin("input02.txt");
-    ofstream fout("outtie02.txt");
+  ofstream fout("outtie02.txt");
     int val;
     while(fin>>val)
     {
-        if(val%3 == 0 && v.size() > 0)
+        if(gr(3)%3 == 0 && v.size() > 0)
         {
             ll v1 = v.top(); v.pop();
             ll v2 = a.del_min();
