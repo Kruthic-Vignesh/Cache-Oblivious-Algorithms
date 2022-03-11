@@ -5,6 +5,11 @@
 
 using namespace std;
 
+priority_q::priority_q()
+{
+    this->no_el = 0;
+}
+
 pair<ll,ll> priority_q::last_down_bf(ll lno)
 {
     ll i = level[lno].fir, pre = -1;
@@ -18,6 +23,7 @@ pair<ll,ll> priority_q::last_down_bf(ll lno)
 
 void priority_q::insert(T val)
 {
+    this->no_el++;
     del_bf.push_back(val);
     asc_sort(del_bf);
     ll push_ins_bf = del_bf.back();
@@ -32,6 +38,8 @@ void priority_q::insert(T val)
 
 T priority_q::del_min()
 {
+    if(this->no_el > 0) this->no_el--;
+    else exit(-1);
     if(del_bf.size())
     {
         desc_sort(del_bf);
@@ -58,6 +66,11 @@ T priority_q::del_min()
     ll rett = del_bf.back();
     del_bf.pop_back();
     return rett;
+}
+
+ll priority_q::size()
+{
+    return this->no_el;
 }
 
 void priority_q::p_b()
