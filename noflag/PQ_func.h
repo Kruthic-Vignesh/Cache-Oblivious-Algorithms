@@ -39,7 +39,7 @@ void priority_q::insert(T val)
 T priority_q::del_min()
 {
     if(this->no_el > 0) this->no_el--;
-    else exit(-1);
+    else throw("-1");
     if(del_bf.size())
     {
         desc_sort(del_bf);
