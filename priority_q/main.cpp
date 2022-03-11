@@ -2,69 +2,69 @@
 #include "PQ_func.h"
 #include "push.h"
 #include "pull.h"
-#include <bits/stdc++.h>
+#include <queue>
+#include <ctime>
+#include <random>
+#include <chrono>
+#include <fstream>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 
 using namespace __gnu_pbds;
 using namespace std;
 
-#define int long long
+typedef long long ll;
 
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
+typedef tree<ll, null_type, less<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
 
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-int gr(int r)
+ll gr(ll r)
 {
-   uniform_int_distribution<int> uid(0,r-1);
-   int val = uid(rng);
+   uniform_ll_distribution<ll> uid(0,r-1);
+   ll val = uid(rng);
    return val+1;
 }
 
-int glr(int l, int r)
+ll glr(ll l, ll r)
 {
-    int dif = r-l+1;
-    int x = gr(dif) + l-1;
+    ll dif = r-l+1;
+    ll x = gr(dif) + l-1;
     return x;
 }
 
 priority_q a;
 priority_queue<ll, vector<ll>, greater<ll>> v; 
 
-int32_t main()
+int main()
 {
-    int N = 500;
+    ll N = 500;
     ll cc = 0, vv = 0;
     bool ch = true;
-    ifstream fin("input02.txt");
-    freopen("output02.txt", "w", stdout);
-    ofstream fout("outtie02.txt");
-    int val;
+    ifstream fin("input00.txt");
+  ofstream fout("outtie00.txt");
+    ll val;
     while(fin>>val)
     {
-        if(val%3 == 0 && v.size() > 0)
+        if(gr(3)%3 == 0 && v.size() > 0)
         {
             ll v1 = v.top(); v.pop();
             ll v2 = a.del_min();
-            fout<<"DELETION "<<v1<<" "<<v2<<endl;
-            if(v1 != v2) ch = false;
+            ll u1 = v.size();
+            ll u2 = a.size();
+            fout<<"DELETION "<<v1<<" "<<v2<<" "<<u1<<" "<<u2<<endl;
+            if(v1 != v2 || u1 != u2) ch = false;
             if(!ch)
             {
-                fout<<"You are wrong!\n";
-                //fout<<i<<endl;
+                cout<<"fayo"<<endl;
                 exit(0);
             }
         }
         else
         {
-            fout<<"INSERTION OF VAL! "<<val<<endl;
             v.push(val);
             a.insert(val);
         }
-
-        cout<<" a.ins_bf.size()  " << a.ins_bf.size()<<endl;
-
         if(a.ins_bf.size()>5)
         {
             cout<<"INS BF OVERFLOW!!!!\n";
@@ -77,8 +77,14 @@ int32_t main()
     {
         ll v1 = v.top(); v.pop();
         ll v2 = a.del_min();
-        fout<<"End of the world "<<v1<<" "<<v2<<endl;
-        if(v1 != v2) ch = false;
+        ll u1 = v.size();
+        ll u2 = a.size();
+        fout<<v1<<" "<<v2<<" "<<u1<<" "<<u2<<endl;
+        if(v1 != v2 || u1 != u2) 
+        {
+            ch = false;
+            cout<<"fayl"<<endl;
+        }
 
         if(!ch)
         {
@@ -86,10 +92,6 @@ int32_t main()
             exit(0);
         }
     }
-    // ofstream fout("o4.txt");
-    if(ch) cout<<"\n\nMY WAIFU IS AKARI\n\n"<<endl;
-    // fout.close();
-    fclose(stdin);
+    cout<<"\nSUCCESS\n";
     fclose(stdout);
-
 }
