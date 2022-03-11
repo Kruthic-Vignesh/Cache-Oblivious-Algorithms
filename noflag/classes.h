@@ -83,15 +83,18 @@ public:
 
 class priority_q
 {
+    unsigned long int no_el;
 public:
     vector<lvl> level;          //Levels numbered from 0 to level.size()-1
     vector<T> ins_bf, del_bf;   //insert and delete buffers
     const ll ins_size = 5;                //maximum size of insert and delete buffers
+    priority_q();
     void insert(T val);         
     T del_min();
     void push(const ll, vector<T>&);
     void pull(const ll, vector<T>&);
     void split(const ll, const ll);
+    ll size();
     void traverse(ll lno)
     {
         cout<<"TRAVERSING lvl "<<lno<<endl<<endl;
