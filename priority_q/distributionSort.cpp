@@ -84,15 +84,24 @@ void distributeBckts(vector<bucket>& bckts, ll arr[], ll& size, ll& rootSize, ll
             ll x = 0, y = 0;
 
             for (ll p = 0; p < tempBkt.bckt.size(); p++)
-                if (tempBkt.bckt[p] < tempBkt.pivot) {
+                if (tempBkt.bckt[p] < median) {
                     temp1[x] = tempBkt.bckt[p];
                     x++;
                 }
-                else {
+                else if (tempBkt.bckt[p] > median) {
                     temp2[y] = tempBkt.bckt[p];
                     y++;
                 }
 
+            while (x < size1) {
+                temp1[x] = median;
+                x++;
+            }
+
+            while (y < size2) {
+                temp2[y] = median;
+                y++;
+            }
 
             distributionSort(temp1, size1);
             distributionSort(temp2, size2);
