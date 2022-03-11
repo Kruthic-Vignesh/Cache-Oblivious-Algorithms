@@ -46,8 +46,10 @@ int32_t main()
         {
             ll v1 = v.top(); v.pop();
             ll v2 = a.del_min();
-            fout<<"DELETION "<<v1<<" "<<v2<<endl;
-            if(v1 != v2) ch = false;
+            int u1 = v.size();
+            int u2 = a.size();
+            fout<<"DELETION "<<v1<<" "<<v2<<" "<<u1<<" "<<u2<<endl;
+            if(v1 != v2 || u1 != u2) ch = false;
             if(!ch)
             {
                 cout<<"fayo"<<endl;
@@ -71,8 +73,10 @@ int32_t main()
     {
         ll v1 = v.top(); v.pop();
         ll v2 = a.del_min();
-        fout<<v1<<" "<<v2<<endl;
-        if(v1 != v2) 
+        int u1 = v.size();
+        int u2 = a.size();
+        fout<<v1<<" "<<v2<<" "<<u1<<" "<<u2<<endl;
+        if(v1 != v2 || u1 != u2) 
         {
             ch = false;
             cout<<"fayl"<<endl;
