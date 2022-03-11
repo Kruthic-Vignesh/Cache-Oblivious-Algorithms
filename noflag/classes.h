@@ -95,60 +95,8 @@ public:
     void pull(const ll, vector<T>&);
     void split(const ll, const ll);
     ll size();
-    void traverse(ll lno)
-    {
-        cout<<"TRAVERSING lvl "<<lno<<endl<<endl;
-        if(lno >= level.size()) 
-        {
-            cout<<endl;
-            return;
-        }
-        cout<<"down_bf\n";
-        cout<<"down_bf_size "<<level[lno].down_bf_cnt<<" "<<level[lno].min_sz<<" "<<level[lno].down_cnt<<endl;
-        ll i = level[lno].fir;
-        if(i == -1) return;
-        while(true)
-        {
-            cout<<"i is "<<i<<", pivot is "<<level[lno].down_bf[i].pivot<<endl;
-            for(ll x : level[lno].down_bf[i].st)
-                cout<<x<<" ";
-            cout<<endl;
-            if(level[lno].down_bf[i].next == -1) break;
-            i = level[lno].down_bf[i].next;
-        }
-        cout<<endl<<endl;
-        cout<<"up_bf\n";
-        for(ll x:level[lno].up_bf)  cout<<x<<' ';
-        cout<<endl<<endl;
-    }
-    void final_traverse(ll lno)
-    {
-        cout<<"TRAVERSING lvl "<<lno<<endl<<endl;
-        if(lno >= level.size()) 
-        {
-            cout<<endl;
-            return;
-        }
-        cout<<"down_bf\n";
-        cout<<"down_bf_size "<<level[lno].down_bf_cnt<<" "<<level[lno].min_sz<<" "<<level[lno].down_cnt<<endl;
-        ll i = level[lno].fir;
-        if(i == -1) return;
-        while(true)
-        {
-            cout<<"i is "<<i<<", pivot is "<<level[lno].down_bf[i].pivot<<endl;
-            asc_sort(level[lno].down_bf[i].st);
-            for(ll x : level[lno].down_bf[i].st)
-                cout<<x<<" ";
-            cout<<endl;
-            if(level[lno].down_bf[i].next == -1) break;
-            i = level[lno].down_bf[i].next;
-        }
-        cout<<endl<<endl;
-        cout<<"up_bf\n";
-        asc_sort(level[lno].up_bf);
-        for(ll x:level[lno].up_bf)  cout<<x<<' ';
-        cout<<endl<<endl;
-    }
+    void traverse(ll lno);
+    void final_traverse(ll lno);
 
     void make_newlvl(ll,vector<T>&);
     void push_to_upbf(ll);
