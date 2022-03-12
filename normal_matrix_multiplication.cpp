@@ -1,6 +1,6 @@
 /* PC-01 Cache Oblivious Algorithms */
 
-#include<bits/stdc++.h>
+#include <iostream>
 
 using namespace std;
 
@@ -46,19 +46,11 @@ void sol()
 int main()
 {
     freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-
-    double time_spent = 0;
-    clock_t begin = clock();
     ll t;
     cin>>t;
     for(ll i = 0; i < t; i++) 
         sol();
-    clock_t end = clock();
-    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
-    cout<<time_spent<<endl;
 
     fclose(stdin);
-    fclose(stdout);
     return 0;
 }
