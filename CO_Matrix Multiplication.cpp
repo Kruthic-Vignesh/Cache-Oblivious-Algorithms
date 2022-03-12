@@ -1,6 +1,6 @@
 /* PC-01 - Cache Algorithms */
 
-#include<bits/stdc++.h>
+#include <iostream>
 
 using namespace std;
 
