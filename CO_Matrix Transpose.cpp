@@ -61,6 +61,6 @@ int main()
         solv();
     }
    
-    fclose(stdin));
+    fclose(stdin);
     return 0;
 }
