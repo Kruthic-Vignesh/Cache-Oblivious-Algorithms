@@ -74,24 +74,15 @@ void solv()
 int main()
 {
     freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
    
     ll tc=1;
     cin>>tc;
-
-    double time_spent = 0;
-    clock_t begin = clock();
    
     for(ll lv=1;lv<=tc;lv++)
     {
         solv();
     }
-       
-    clock_t end = clock();
-    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
-    cout<<time_spent<<endl;
    
     fclose(stdin);
-    fclose(stdout);
     return 0;
 }
